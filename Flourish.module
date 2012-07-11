@@ -1,0 +1,29 @@
+<?php
+
+class Flourish extends WireData implements Module {
+	public static function getModuleInfo() {
+		return array(
+            'title' => 'Flourish', 
+            'version' => '0.1', 
+            'summary' => 'Module to include flourish libraries',
+			'singular' => true, 
+			'autoload' => true, 
+        );
+	}
+
+	public function init() {
+        function flourish_loader( $class_name ) {        
+            // Customize this to your root Flourish directory
+            $flourish_root = wire('config')->paths->root . 'site/modules/Flourish/.flourish/classes/';
+
+            $file = $flourish_root . $class_name . '.php';
+            if (file_exists($file)) {
+                include $file;
+            } else {
+                //echo "$file not found";
+            }
+        }
+
+        spl_autoload_register( 'flourish_loader', true );
+	}
+}
